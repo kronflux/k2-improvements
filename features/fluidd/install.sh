@@ -29,14 +29,14 @@ rm -fr fluidd
 
 mkdir -p fluidd
 cd fluidd
-python3 ${SCRIPT_DIR}/get_latest_release.py jamincollins/fluidd
+python3 ${SCRIPT_DIR}/get_latest_release.py kronflux/fluidd
 unzip fluidd.zip
 rm -f fluidd.zip
 cd ..
 
 # replace the existing Fluidd
 rm -fr /usr/share/fluidd
-ln -sf ~/fluidd /usr/share/fluidd
+ln -snf ~/fluidd /usr/share/fluidd
 
 # restart nginx
 /etc/init.d/nginx restart

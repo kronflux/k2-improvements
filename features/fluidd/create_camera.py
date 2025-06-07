@@ -23,7 +23,7 @@ def create_camera(ip_address):
     # Prepare the request data
     camera_config = {
         "name": "Front",
-        "service": "webrtc-crealityk2rtc",
+        "service": "webrtc-crealityk2",
         "stream_url": f"http://{ip_address}:8000/",
         "snapshot_url": "/webcam?action=snapshot"
     }

@@ -11,7 +11,7 @@ if [ ! -d cartographer-klipper/.git ]; then
     if [ -d cartographer-klipper ]; then
         rm -rf cartographer-klipper
     fi
-    git clone https://github.com/jamincollins/cartographer-klipper.git
+    git clone https://github.com/kronflux/cartographer-klipper.git
     git -C cartographer-klipper checkout k2
 fi
 
@@ -56,29 +56,31 @@ echo "I: installing cartographer"
 
 # install usb-serial bridge
 mkdir -p /mnt/UDISK/bin
-ln -sf  ${SCRIPT_DIR}/usb_bridge /mnt/UDISK/bin/usb_bridge
+ln -snf  ${SCRIPT_DIR}/usb_bridge /mnt/UDISK/bin/usb_bridge
 chmod +x /mnt/UDISK/bin/usb_bridge
-ln -s ${SCRIPT_DIR}/cartographer.sh /mnt/UDISK/bin/cartographer.sh
-ln -sf ${SCRIPT_DIR}/cartographer.init /etc/init.d/cartographer
-ln -sf ${SCRIPT_DIR}/cartographer.init /opt/etc/init.d/S50cartographer
+ln -snf ${SCRIPT_DIR}/cartographer.sh /mnt/UDISK/bin/cartographer.sh
+ln -snf ${SCRIPT_DIR}/cartographer.init /etc/init.d/cartographer
+ln -snf ${SCRIPT_DIR}/cartographer.init /opt/etc/init.d/S50cartographer
 /etc/init.d/cartographer start
 
 # install cartographer convenience scripts
-ln -sf ${SCRIPT_DIR}/cartographer.sh /mnt/UDISK/bin
+ln -snf ${SCRIPT_DIR}/cartographer.sh /mnt/UDISK/bin/cartographer.sh
 chmod +x /mnt/UDISK/bin/cartographer.sh
 
-# remove the prtouch_v3 section from printer.cfg
-python ${SCRIPT_DIR}/alter_config.py
-# add a commented include to custom/main.cfg
-python ${SCRIPT_DIR}/../../scripts/ensure_included.py \
-    ~/printer_data/config/custom/main.cfg prtouch_v3.cfg True
-# add the main.cfg to printer.cfg
-python ${SCRIPT_DIR}/../../scripts/ensure_included.py \
-    ~/printer_data/config/printer.cfg custom/main.cfg
+# Ensure custom config directory exists
+test -d ~/printer_data/config/custom || mkdir -p ~/printer_data/config/custom
+
+# Ensure main.cfg exists
+test -f ~/printer_data/config/custom/main.cfg || touch ~/printer_data/config/custom/main.cfg
+
 # I believe I still want this as a true copy
-# add the cartographer.cfg to main.cfg
+# add the cartographer.cfg
 cp ${SCRIPT_DIR}/cartographer.cfg ~/printer_data/config/custom
-python ${SCRIPT_DIR}/../../scripts/ensure_included.py ~/printer_data/config/custom/main.cfg cartographer.cfg
+
+# Ensure it is included in custom/main.cfg
+python ${SCRIPT_DIR}/../../scripts/ensure_included.py \
+    ~/printer_data/config/custom/main.cfg \
+    cartographer.cfg
 
 # make this a patch
 cd ~/klipper/klippy/extras
@@ -88,7 +90,7 @@ cd -
 
 # replace the bed mesh
 rm -fr ~/klipper/klippy/extras/bed_mesh.py*
-ln -sf ${SCRIPT_DIR}/bed_mesh.py ~/klipper/klippy/extras/bed_mesh.py
+ln -snf ${SCRIPT_DIR}/bed_mesh.py ~/klipper/klippy/extras/bed_mesh.py
 
 # restart klipper
 /etc/init.d/klipper restart

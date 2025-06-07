@@ -65,7 +65,7 @@ prereqs() {
 
 gather_repositories() {
     git clone "https://github.com/Klipper3d/klipper" "$WORKDIR/klipper"
-    git clone "https://github.com/Cartographer3D/cartographer-klipper.git" "$WORKDIR/cartographer-klipper"
+    git clone "https://github.com/kronflux/cartographer-klipper.git" "$WORKDIR/cartographer-klipper"
 }
 
 update_repository() {

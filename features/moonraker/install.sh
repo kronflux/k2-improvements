@@ -53,7 +53,7 @@ fetch_moonraker() {
     if [ -d moonraker/.git ]; then
         git -C moonraker pull
     else
-        git clone https://github.com/jamincollins/moonraker.git
+        git clone https://github.com/kronflux/moonraker.git
     fi
     # ensure we are on the k2 branch
     git -C moonraker checkout k2
@@ -80,7 +80,7 @@ create_moonraker_venv() {
 install_libs() {
     progress "Installing mooonraker libs ..."
     for LIB in ${SCRIPT_DIR}/libs/*.so*; do
-        ln -sf ${LIB} /lib/
+        ln -snf ${LIB} /lib/
     done
 }
 
@@ -92,8 +92,8 @@ replace_moonraker() {
 
     # update init script location for new config file location
     rm -f /etc/rc.d/S*moonraker
-    ln -sf ${SCRIPT_DIR}/moonraker.init /etc/init.d/moonraker
-    ln -sf ${SCRIPT_DIR}/moonraker.init /opt/etc/init.d/S56moonraker
+    ln -snf ${SCRIPT_DIR}/moonraker.init /etc/init.d/moonraker
+    ln -snf ${SCRIPT_DIR}/moonraker.init /opt/etc/init.d/S56moonraker
 
     # full copy not symlink here
     cp ${SCRIPT_DIR}/moonraker.conf /mnt/UDISK/printer_data/config/moonraker.conf

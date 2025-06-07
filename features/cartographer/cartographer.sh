@@ -17,14 +17,14 @@ usage() {
 
 case ${ACTION} in
     enable)
-        ln -sf ~/cartographer-klipper/scanner.py ~/klipper/klippy/extras
-        ln -sf ~/cartographer-klipper/cartographer.py ~/klipper/klippy/extras
-        ln -sf ~/cartographer-klipper/idm.py ~/klipper/klippy/extras
+        ln -snf ~/cartographer-klipper/scanner.py ~/klipper/klippy/extras/scanner.py
+        ln -snf ~/cartographer-klipper/cartographer.py ~/klipper/klippy/extras/cartographer.py
+        ln -snf ~/cartographer-klipper/idm.py ~/klipper/klippy/extras/idm.py
         cd ~/klipper/klippy/extras
         patch < "${PATCH}"
         rm -f homing.pyc
         rm -f bed_mesh.py*
-        ln -sf ~/k2-improvements/features/cartographer/bed_mesh.py .
+        ln -snf ~/k2-improvements/features/cartographer/bed_mesh.py bed_mesh.py
         sed -E \
             -i \
             -e 's/(.*prtouch.*)/#\1/' \

@@ -1,0 +1,27 @@
+#!/bin/ash
+# Entware service manager (unslung) init script for K2 Plus
+# Manages startup/shutdown of Entware services with debug logging
+# Waits for storage to be mounted before starting services
+
+ACTION=${1}
+
+# Convert boot action to start for compatibility
+if [ "${ACTION}" == "boot" ]; then
+    ACTION=start
+fi
+
+# Enable debug logging to /tmp/unslung.log
+exec 1>> /tmp/unslung.log 2>&1
+set -x 
+
+# Wait for UDISK storage to be available before starting services
+# This prevents services from starting before their data directories are accessible
+while ! grep -q "/mnt/UDISK" /proc/mounts; do
+    sleep 1
+done
+
+echo "unslung called with ${ACTION}"
+# Execute Entware's service management with debug output
+sh -x /opt/etc/init.d/rc.unslung "${ACTION}"
+echo "unslung exiting"
+

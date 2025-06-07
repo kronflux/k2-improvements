@@ -15,9 +15,9 @@ cp -f ${SCRIPT_DIR}/webrtc.init /etc/init.d/webrtc
 # linking so they get updates
 test -d /mnt/UDISK/bin || mkdir -p /mnt/UDISK/bin
 
-ln -sf ${SCRIPT_DIR}/bin/sudo /mnt/UDISK/bin/
-ln -sf ${SCRIPT_DIR}/bin/supervisorctl /mnt/UDISK/bin/
-ln -sf ${SCRIPT_DIR}/bin/systemctl /mnt/UDISK/bin/
+ln -snf ${SCRIPT_DIR}/bin/sudo /mnt/UDISK/bin/sudo
+ln -snf ${SCRIPT_DIR}/bin/supervisorctl /mnt/UDISK/bin/supervisorctl
+ln -snf ${SCRIPT_DIR}/bin/systemctl /mnt/UDISK/bin/systemctl
 
 # update the path
 echo 'export PATH=/mnt/UDISK/bin:$PATH' > /etc/profile.d/better-init.sh
